@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>TikTok Creator Tools</title>
+<style>
+:root{--bg:#ffffff;--card:#f4f5f7;--tx:#14161a;--mut:#5d6470;--ac:#fe2c55;--ac2:#25f4ee;--bd:#e1e4e8;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1013;--card:#1a1d22;--tx:#f1f3f5;--mut:#9aa3ae;--bd:#2b3038;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0e1013;--card:#1a1d22;--tx:#f1f3f5;--mut:#9aa3ae;--bd:#2b3038;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,"Noto Sans Ethiopic","Segoe UI",sans-serif;line-height:1.55}
+.w{max-width:720px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:1.6rem;margin:8px 0 4px}
+h1 span{color:var(--ac)}
+p.s{color:var(--mut);margin:0 0 20px}
+.ad{border:1px dashed var(--bd);color:var(--mut);text-align:center;padding:14px;border-radius:12px;margin:18px 0;font-size:.85rem}
+section{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:16px;margin-bottom:16px}
+h2{font-size:1.1rem;margin:0 0 10px}
+input,textarea,select{width:100%;padding:12px;border-radius:10px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font:inherit;margin-bottom:10px}
+textarea{min-height:110px;resize:vertical}
+button{background:var(--ac);color:#fff;border:0;border-radius:10px;padding:12px 18px;font:inherit;font-weight:600;cursor:pointer}
+button.g{background:transparent;color:var(--tx);border:1px solid var(--bd);margin-left:6px}
+.out{margin-top:12px;white-space:pre-wrap;word-break:break-word;background:var(--bg);border:1px solid var(--bd);border-radius:10px;padding:12px;min-height:44px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.chip{background:var(--bg);border:1px solid var(--bd);padding:6px 10px;border-radius:999px;font-size:.9rem;cursor:pointer}
+.chip:hover{border-color:var(--ac)}
+.cnt{color:var(--mut);font-size:.85rem}
+footer{color:var(--mut);font-size:.8rem;text-align:center;margin-top:24px}
+</style>
+</head>
+<body>
+<div class="w">
+<h1>🎵 TikTok <span>Creator Tools</span></h1>
+<p class="s">ለ TikTok ፈጣሪዎች ነጻ መሣሪያዎች። ምዝገባ አያስፈልግም።</p>
+
+<div class="ad">📢 የማስታወቂያ ቦታ (Ad space)</div>
+
+<section>
+<h2>#️⃣ Hashtag ጄኔሬተር</h2>
+<input id="ht" placeholder="ርዕስ ይጻፉ (ለምሳሌ: cooking, fitness, ኮሜዲ)">
+<button onclick="genTags()">Hashtag ፍጠር</button>
+<button class="g" onclick="copyTags()">ሁሉንም ኮፒ</button>
+<div class="chips" id="tags"></div>
+</section>
+
+<section>
+<h2>✍️ Caption ሃሳብ ጄኔሬተር</h2>
+<input id="ct" placeholder="ስለ ምን ነው ቪዲዮው? (ለምሳሌ: የቡና አሰራር)">
+<select id="tone">
+<option value="fun">አዝናኝ</option>
+<option value="hook">ትኩረት ሳቢ (Hook)</option>
+<option value="inspire">አነቃቂ</option>
+</select>
+<button onclick="genCap()">Caption ፍጠር</button>
+<div class="out" id="caps">ውጤቱ እዚህ ይታያል።</div>
+</section>
+
+<section>
+<h2>🔢 የ Caption ቁምፊ ቆጣሪ</h2>
+<textarea id="txt" placeholder="caption እዚህ ይጻፉ..." oninput="count()"></textarea>
+<div class="cnt" id="cnt">0 ቁምፊ · 0 ቃላት · 0 hashtag</div>
+</section>
+
+<div class="ad">📢 የማስታወቂያ ቦታ (Ad space)</div>
+<footer>ይህ ድረ-ገጽ ከ TikTok ጋር ግንኙነት የለውም። TikTok የ TikTok Inc. የንግድ ምልክት ነው።</footer>
+</div>
+
+<script>
+const base=["fyp","foryou","foryoupage","viral","trending","tiktok","tiktokethiopia","ethiopia","habesha","addisababa"];
+const suf=["","tips","tok","challenge","daily","lover","life","ideas","vibes","2026"];
+function clean(s){return s.toLowerCase().replace(/[^\p{L}\p{N}]+/gu,"")}
+function genTags(){
+  const words=document.getElementById("ht").value.split(/[,\s]+/).map(clean).filter(Boolean);
+  if(!words.length){return}
+  const set=new Set();
+  words.forEach(w=>suf.forEach(s=>set.add("#"+w+s)));
+  base.forEach(b=>set.add("#"+b));
+  const list=[...set].slice(0,30);
+  const box=document.getElementById("tags");box.innerHTML="";
+  list.forEach(t=>{const c=document.createElement("span");c.className="chip";c.textContent=t;
+    c.onclick=()=>navigator.clipboard&&navigator.clipboard.writeText(t).catch(()=>{});box.appendChild(c)});
+}
+function copyTags(){
+  const t=[...document.querySelectorAll("#tags .chip")].map(c=>c.textContent).join(" ");
+  if(t&&navigator.clipboard){navigator.clipboard.writeText(t).catch(()=>{})}
+}
+const T={
+fun:["{x} ሞክራችሁ ታውቃላችሁ? 😂 አስተያየት ስጡኝ!","ዛሬ ስለ {x} ነው ያመጣሁላችሁ 🔥 እስከ መጨረሻ ይመልከቱ","{x} ላይ ማንም ያልነገራችሁ ነገር 👀","እኔ ከ{x} ጋር ስገናኝ... 🤣"],
+hook:["ስለ {x} ይህን ካላወቃችሁ ብዙ እያመለጣችሁ ነው 👇","3 ነገሮች ስለ {x} ማወቅ ያለባችሁ","{x} ለምን ይህን ያህል ተወዳጅ ሆነ?","ይህን ቪዲዮ ከማየታችሁ በፊት {x} አትጀምሩ ⚠️"],
+inspire:["{x} ላይ ዛሬ ጀምሩ፤ ነገ ይመሰግናችኋል 💪","ትንሽ ቀን፣ ትልቅ ለውጥ — {x} 🌟","{x} ይቻላል፣ እመኑ።","ሁሉም ሰው ከጀማሪ ይጀምራል፤ {x} ላይ አትፍሩ ✨"]};
+function genCap(){
+  const x=document.getElementById("ct").value.trim()||"ይህ ርዕስ";
+  const tone=document.getElementById("tone").value;
+  document.getElementById("caps").textContent=T[tone].map((s,i)=>(i+1)+". "+s.replace(/\{x\}/g,x)).join("\n\n");
+}
+function count(){
+  const v=document.getElementById("txt").value;
+  const w=v.trim()?v.trim().split(/\s+/).length:0;
+  const h=(v.match(/#[\p{L}\p{N}_]+/gu)||[]).length;
+  document.getElementById("cnt").textContent=[...v].length+" ቁምፊ · "+w+" ቃላት · "+h+" hashtag";
+}
+</script>
+</body>
+</html>
