@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="google-site-verification" content="X52HoFjX_KIaaVY1-vtdO6YxSXX-Oeyj4Xf_s10UAO4" />
+<meta name="description" content="የኢትዮጵያ የደመወዝ ግብር ማስያ: የገቢ ግብር፣ ጡረታና የተጣራ ደመወዝ በነጻ ያሰሉ።">
+<title>የደመወዝ ግብር ማስያ | Ethiopia Salary Tax Calculator</title>
+<style>
+:root{--bg:#fff;--card:#f3f6f4;--tx:#13201a;--mut:#5a6a62;--ac:#0b7a4b;--bd:#d9e2dc;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1511;--card:#16211b;--tx:#eef4f0;--mut:#9bb0a4;--bd:#25352c;--ac:#34c27f;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0d1511;--card:#16211b;--tx:#eef4f0;--mut:#9bb0a4;--bd:#25352c;--ac:#34c27f;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,"Noto Sans Ethiopic","Segoe UI",sans-serif;line-height:1.55}
+.w{max-width:640px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:1.5rem;margin:8px 0 4px}
+.s{color:var(--mut);margin:0 0 16px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:16px;margin-bottom:16px}
+label{display:block;font-weight:600;margin:10px 0 4px}
+input{width:100%;padding:12px;border-radius:10px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font:inherit}
+.row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--bd)}
+.row:last-child{border:0}
+.big{font-size:1.5rem;font-weight:700;color:var(--ac)}
+button{margin-top:14px;width:100%;background:var(--ac);color:#fff;border:0;border-radius:10px;padding:13px;font:inherit;font-weight:700;cursor:pointer}
+.ad{border:1px dashed var(--bd);color:var(--mut);text-align:center;padding:14px;border-radius:12px;margin:16px 0;font-size:.85rem}
+.wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.9rem}
+td,th{padding:6px 8px;border-bottom:1px solid var(--bd);text-align:left;white-space:nowrap}
+small{color:var(--mut)}
+</style>
+</head>
+<body>
+<div class="w">
+<h1>💰 የደመወዝ ግብር ማስያ</h1>
+<p class="s">የኢትዮጵያ ተቀጣሪ የገቢ ግብር፣ ጡረታና የተጣራ ደመወዝ (በወር፣ በብር)።</p>
+
+<div class="card">
+<label for="b">መሠረታዊ ደመወዝ (ብር)</label>
+<input id="b" type="number" inputmode="decimal" min="0" placeholder="ለምሳሌ 15000">
+<label for="a">ግብር የሚከፈልበት ሌላ አበል (አማራጭ)</label>
+<input id="a" type="number" inputmode="decimal" min="0" placeholder="ለምሳሌ 2000">
+<button onclick="calc()">አስላ</button>
+</div>
+
+<div class="card" id="res" hidden>
+<div class="row"><span>ጠቅላላ ገቢ</span><b id="r1"></b></div>
+<div class="row"><span>ጡረታ (7%)</span><b id="r2"></b></div>
+<div class="row"><span>ግብር የሚከፈልበት ገቢ</span><b id="r3"></b></div>
+<div class="row"><span>የገቢ ግብር</span><b id="r4"></b></div>
+<div class="row"><span>የተጣራ ደመወዝ</span><b class="big" id="r5"></b></div>
+<div class="row"><small>አሠሪው የሚከፍለው ጡረታ (11%)</small><small id="r6"></small></div>
+</div>
+
+<div class="card">
+<b>🔁 ከተጣራ ደመወዝ ወደ መሠረታዊ ደመወዝ</b>
+<label for="n">የሚፈልጉት የተጣራ ደመወዝ (ብር)</label>
+<input id="n" type="number" inputmode="decimal" min="0" placeholder="ለምሳሌ 20000">
+<button onclick="rev()">አስላ</button>
+<p id="rv"></p>
+</div>
+
+<div class="card">
+<b>📈 የደመወዝ ጭማሪ ማስያ</b>
+<label for="c">አሁን ያለዎት መሠረታዊ ደመወዝ (ብር)</label>
+<input id="c" type="number" inputmode="decimal" min="0" placeholder="ለምሳሌ 12000">
+<label for="p">ጭማሪ (%)</label>
+<input id="p" type="number" inputmode="decimal" min="0" placeholder="ለምሳሌ 10">
+<button onclick="raise()">አስላ</button>
+<p id="rs"></p>
+</div>
+
+<div class="ad">📢 የማስታወቂያ ቦታ (Ad space)</div>
+
+<div class="card">
+<b>የግብር ሰንጠረዥ (በወር)</b>
+<div class="wrap"><table>
+<tr><th>ገቢ (ብር)</th><th>ተመን</th></tr>
+<tr><td>0 – 2,000</td><td>0%</td></tr>
+<tr><td>2,001 – 4,000</td><td>15%</td></tr>
+<tr><td>4,001 – 7,000</td><td>20%</td></tr>
+<tr><td>7,001 – 10,000</td><td>25%</td></tr>
+<tr><td>10,001 – 14,000</td><td>30%</td></tr>
+<tr><td>ከ14,000 በላይ</td><td>35%</td></tr>
+</table></div>
+<p><small>ማስታወሻ: ይህ ግምታዊ ማስያ ነው። የትራንስፖርት፣ የሥራ ላይ ጉዳት ወዘተ ነጻ የሚሆኑ አበሎች አልተካተቱም፤ የግብር ሕግ ሊቀየር ይችላል። ለትክክለኛ ቁጥር ከሒሳብ ክፍልዎ ወይም ከገቢዎች ሚኒስቴር (mor.gov.et) ያረጋግጡ።</small></p>
+</div>
+</div>
+<script>
+const BR=[[2000,0],[4000,.15],[7000,.20],[10000,.25],[14000,.30],[Infinity,.35]];
+function tax(x){let t=0,lo=0;for(const[hi,r]of BR){if(x>lo)t+=(Math.min(x,hi)-lo)*r;lo=hi;}return t}
+const f=n=>Math.round(n).toLocaleString("en-US")+" ብር";
+const net=b=>b-b*.07-tax(b*.93);
+function rev(){
+  const n=parseFloat(document.getElementById("n").value)||0;
+  if(n<=0)return;
+  let lo=n,hi=n*3;
+  for(let i=0;i<60;i++){const m=(lo+hi)/2;if(net(m)<n)lo=m;else hi=m;}
+  const b=Math.ceil(hi);
+  document.getElementById("rv").innerHTML="የተጣራ "+f(n)+" ለማግኘት መሠረታዊ ደመወዝ ወደ <b>"+f(b)+"</b> ገደማ መሆን አለበት።<br><small>(አበል ሳይጨምር፤ ጡረታ 7% ተቀንሷል)</small>";
+}
+function raise(){
+  const c=parseFloat(document.getElementById("c").value)||0;
+  const p=parseFloat(document.getElementById("p").value)||0;
+  if(c<=0)return;
+  const nb=c*(1+p/100),a=net(c),z=net(nb);
+  document.getElementById("rs").innerHTML="አዲስ መሠረታዊ: <b>"+f(nb)+"</b><br>የተጣራ ከ "+f(a)+" ወደ <b>"+f(z)+"</b><br>ተጨማሪ የሚደርስዎ: <b>"+f(z-a)+"</b> (ከጭማሪው "+Math.round((z-a)/(nb-c||1)*100)+"%)";
+}
+function calc(){
+  const b=parseFloat(document.getElementById("b").value)||0;
+  const a=parseFloat(document.getElementById("a").value)||0;
+  if(b<=0)return;
+  const gross=b+a,pen=b*.07,tx=Math.max(0,gross-pen),t=tax(tx);
+  document.getElementById("r1").textContent=f(gross);
+  document.getElementById("r2").textContent="− "+f(pen);
+  document.getElementById("r3").textContent=f(tx);
+  document.getElementById("r4").textContent="− "+f(t);
+  document.getElementById("r5").textContent=f(gross-pen-t);
+  document.getElementById("r6").textContent=f(b*.11);
+  document.getElementById("res").hidden=false;
+}
+</script>
+</body>
+</html>
